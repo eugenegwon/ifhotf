@@ -48,8 +48,8 @@ class hfunc(object):
 				request_raw=self.buf.getvalue().splitlines()
 				try:
 					for header in request_raw[3:-1]:
-						h=header.split(':')[0]
-						v=header.split(':')[1]
+						h=header.split(': ')[0]
+						v=header.split(': ')[1]
 						self.headers[h]=v
 				except Exception,e:
 						self.clear()
@@ -66,11 +66,19 @@ class hfunc(object):
 			if self.buf.len == self.raw_packet_length:
 				raw_body=self.buf.getvalue()[-self.content_length:]
 				try:
-					body=json.loads(raw_body)
-					state=True
+					method=self.headers.get('Method')
+					if method == "GET":
+						body={"Request_url":str(self.headers.get("Request_url"))}
+						state=True
+					elif method == "POST":
+						body=json.loads(raw_body)
+						state=True
+					else:
+						body={"error":"only GET/POST supported"}
+						state=False
 				except Exception,e:
 					body=",".join((str(e),raw_body))
 					state=False
 				finally:
 					self.clear()
-					return [state,body]
+					return [state,method,body]
