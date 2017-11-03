@@ -1,0 +1,4 @@
+dist/*
+*.pyc
+MANIFEST
+setup.py
