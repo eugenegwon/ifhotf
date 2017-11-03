@@ -3,5 +3,5 @@ README.txt
 setup.cfg
 setup.py
 ifhotf/__init__.py
-ifhotf/ifhotf.py
+ifhotf/hfunc.py
 ifhotf/test.py
