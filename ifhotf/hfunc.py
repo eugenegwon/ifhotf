@@ -47,10 +47,11 @@ class hfunc(object):
 			if self.newline >= 11 and self.content_length==0:
 				request_raw=self.buf.getvalue().splitlines()
 				try:
-					for header in request_raw[3:-1]:
-						h=header.split(': ')[0]
-						v=header.split(': ')[1]
-						self.headers[h]=v
+					for header in request_raw[1:-1]:
+						if header != '':
+							h=header.split(': ')[0]
+							v=header.split(': ')[1]
+							self.headers[h]=v
 				except Exception,e:
 						self.clear()
 						return [False,str(e)]
