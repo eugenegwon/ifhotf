@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
 	name='ifhotf',
 	packages=['ifhotf'],
-	version=CHANGE_VER,
+	version='CHANGE_VER',
 	description='for Iron Function(Hot function)',
 	author='Eugene Gwon',
 	author_email='eugenegwon@gmail.com',
