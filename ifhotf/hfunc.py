@@ -27,10 +27,18 @@ class hfunc(object):
 		sys.stdout.write("HTTP/1.1 "+str(res)+'\n')
 
 	def read(self,**kwargs):
+		#request length limit setting
 		if kwargs.get('max_request_size') is not None:
 			max_size=kwargs.get('max_request_size')
 		else:
 			max_request_size=512 #default size
+
+		#in some case, specific 'header' needed.
+		#	if capture_header found in requested data, then return that.
+		if kwargs.get('capture_header') is not None:
+			capture_header=kwargs.get('capture_header')
+		else:
+			capture_header=None 
 
 		for char in sys.stdin.read(1):
 			if char == '\n':
@@ -67,12 +75,16 @@ class hfunc(object):
 			if self.buf.len == self.raw_packet_length:
 				raw_body=self.buf.getvalue()[-self.content_length:]
 				try:
+					#not used; because iron function can't handle dynamic GET request. but add this for future...
 					method=self.headers.get('Method')
 					if method == "GET":
 						body={"Request_url":str(self.headers.get("Request_url"))}
 						state=True
 					elif method == "POST":
 						body=json.loads(raw_body)
+						#add captured header into result
+						if capture_header is not None:
+							body[capture_header]=str(self.headers.get(capture_header))
 						state=True
 					else:
 						body={"error":"only GET/POST supported"}
