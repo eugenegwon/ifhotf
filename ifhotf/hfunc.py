@@ -34,7 +34,7 @@ class hfunc(object):
 			max_request_size=512 #default size
 
 		#in some case, specific 'header' needed.
-		#	if capture_header found in requested data, then return that.
+		#	if capture_header found in requested data, drop body and return that data.
 		if kwargs.get('capture_header') is not None:
 			capture_header=kwargs.get('capture_header')
 		else:
@@ -81,10 +81,9 @@ class hfunc(object):
 						body={"Request_url":str(self.headers.get("Request_url"))}
 						state=True
 					elif method == "POST":
-						body=json.loads(raw_body)
-						#add captured header into result
 						if capture_header is not None:
-							body[capture_header]=str(self.headers.get(capture_header))
+							raw_body=json.dumps({capture_header:str(self.headers.get(capture_header))})
+						body=json.loads(raw_body)
 						state=True
 					else:
 						body={"error":"only GET/POST supported"}
