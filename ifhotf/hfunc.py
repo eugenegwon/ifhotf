@@ -17,7 +17,11 @@ class hfunc(object):
 		self.headers.clear()
 
 	def out(self,status_code,data):
-		body=json.dumps(data) #data must be dict
+		if data is not None:
+			data['status_code']=status_code
+			body=json.dumps(data) #data must be dict
+		else:
+			body={'status_code':status_code}
 		res=Response()
 		res.status=status_code
 		res.body=body
