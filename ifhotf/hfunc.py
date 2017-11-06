@@ -71,7 +71,7 @@ class hfunc(object):
 							self.headers[h]=v
 				except Exception,e:
 						self.clear()
-						return [False,str(e),str),str(request_raw)]
+						return [False,str(e),str(request_raw)]
 
 				#to calculate accurate request size, I need all headers. Task-Id is last header in request, so check it exists.
 				if self.headers.get('Content-Length') != None and self.headers.get('Task-Id') != None:
