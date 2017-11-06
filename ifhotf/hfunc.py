@@ -100,4 +100,8 @@ class hfunc(object):
 					state=False
 				finally:
 					self.clear()
+					#not sure why but sometimes It can't capture header. and in that case, result will be null.
+					#	so I add raw_body for debugging.
+					if body is None:
+						body={"error":"no data","raw_body":str(raw_body)}
 					return [state,method,body]
