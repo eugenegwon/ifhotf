@@ -89,7 +89,7 @@ class hfunc(object):
 						state=True
 					elif method == "POST":
 						if capture_header is not None:
-							raw_body=json.dumps({capture_header:str(self.headers.get(capture_header))})
+							raw_body={capture_header:self.headers.get(capture_header)}
 						body=json.loads(raw_body)
 						state=True
 					else:
