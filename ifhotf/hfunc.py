@@ -21,7 +21,10 @@ class hfunc(object):
 		res=Response()
 		res.status=status_code
 		res.body=body
-		res.headerlist=[('Content-type','application/json')]
+		res.headerlist=[
+			('Content-type','application/json'),
+			('X-Forwarded-status-code',status_code)
+		]
 		res.content_length=len(body)
 
 		sys.stdout.write("HTTP/1.1 "+str(res)+'\n')
