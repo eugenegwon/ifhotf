@@ -17,8 +17,10 @@ class hfunc(object):
 		self.headers.clear()
 
 	def out(self,status_code,data):
+		dict_data={}
 		if data is not None:
-			data['status_code']=status_code
+			dict_data['status_code']=status_code
+			dict_data['data']=data
 			body=json.dumps(data) #data must be dict
 		else:
 			body={'status_code':status_code}
@@ -82,15 +84,15 @@ class hfunc(object):
 			if self.buf.len == self.raw_packet_length:
 				raw_body=self.buf.getvalue()[-self.content_length:]
 				try:
-					#not used; because iron function can't handle dynamic GET request. but add this for future...
 					method=self.headers.get('Method')
-					if method == "GET":
-						body={"Request_url":str(self.headers.get("Request_url"))}
-						state=True
-					elif method == "POST":
+					if method=="POST":
 						if capture_header is not None:
 							raw_body=json.dumps({capture_header:self.headers.get(capture_header)})
 						body=json.loads(raw_body)
+						state=True			
+					elif method == "GET":
+						#not used; because iron function can't handle dynamic GET request. but add this for future...
+						body={"Request_url":str(self.headers.get("Request_url"))}
 						state=True
 					else:
 						body={"error":"only GET/POST supported"}
@@ -100,8 +102,4 @@ class hfunc(object):
 					state=False
 				finally:
 					self.clear()
-					#not sure why but sometimes It can't capture header. and in that case, result will be null.
-					#	so I add raw_body for debugging.
-					if body is None:
-						body={"error":"no data","raw_body":str(raw_body)}
 					return [state,method,body]
