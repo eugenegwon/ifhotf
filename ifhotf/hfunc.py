@@ -38,7 +38,7 @@ class hfunc(object):
 	def read(self,**kwargs):
 		#request length limit setting
 		if kwargs.get('max_request_size') is not None:
-			max_size=kwargs.get('max_request_size')
+			max_request_size=kwargs.get('max_request_size')
 		else:
 			max_request_size=512 #default size
 
@@ -47,7 +47,7 @@ class hfunc(object):
 		if kwargs.get('capture_header') is not None:
 			capture_header=kwargs.get('capture_header')
 		else:
-			capture_header=None 
+			capture_header=None
 
 		for char in sys.stdin.read(1):
 			if char == '\n':
